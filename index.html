@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PetSights | 스마트 반려동물 성분 분석</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Scan Overlay Animation -->
+        <div id="scan-overlay" class="hidden">
+            <div class="viewfinder">
+                <div class="corner top-left"></div>
+                <div class="corner top-right"></div>
+                <div class="corner bottom-left"></div>
+                <div class="corner bottom-right"></div>
+                <div class="scan-line"></div>
+            </div>
+            <div class="scan-text">
+                <p>성분을 분석하고 있습니다...</p>
+                <span class="dot-typing"></span>
+            </div>
+        </div>
+        
+        <!-- ============================================== -->
+        <!-- SCREEN 1: HOME                                 -->
+        <!-- ============================================== -->
+        <main class="screen active-screen" id="screen-home">
+            <header class="app-header">
+                <div class="header-left">
+                    <span class="greeting">안녕하세요 🍬</span>
+                    <h1 class="user-name">김설탕 보호자님</h1>
+                </div>
+                <div class="header-action">
+                    <button class="icon-btn-round"><i data-lucide="bell" style="width: 20px; height: 20px; color: #FFA000;"></i></button>
+                </div>
+            </header>
+
+            <!-- Pet Status Card -->
+            <section class="pet-status mt-4">
+                <div class="card card-pet">
+                    <div class="pet-img-wrap border-mint">
+                        <img src="https://images.unsplash.com/photo-1517849845537-4d257902454a?auto=format&fit=crop&w=150&q=80" alt="김설탕">
+                    </div>
+                    <div class="pet-info">
+                        <span class="caption text-gray">현재 선택된 반려동물</span>
+                        <h2 class="pet-title mb-1">김설탕 · 믹스견 · 6세</h2>
+                        <div class="tag-row mt-1">
+                            <span class="tag tag-solid-dark">가금류 알러지</span>
+                            <span class="tag tag-outline-dark">닭·오리·칠면조 주의</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Scan Action block -->
+            <section class="scan-action mt-4">
+                <div class="scan-box bg-purple-light radius-lg">
+                    <div class="scan-icon mb-3">
+                        <i data-lucide="camera" style="width: 32px; height: 32px;"></i>
+                    </div>
+                    <h2 class="scan-title mb-1">성분 분석 스캔</h2>
+                    <p class="scan-desc mb-4 text-gray">사료나 간식의 성분표를 찍어주세요<br>AI가 알러지 유발 성분을 즉시 찾아냅니다</p>
+                    <button class="btn btn-primary btn-block btn-pill text-white shadow-btn">스캔 시작하기</button>
+                </div>
+            </section>
+
+            <!-- Recent Products -->
+            <section class="recent-products mt-5">
+                <div class="section-title-wrap mb-3">
+                    <h3>최근 구경한 제품</h3>
+                    <a href="#" class="btn-text">전체보기</a>
+                </div>
+                <div class="scroll-x gap-3">
+                    <div class="product-card-sq">
+                        <div class="img-box bg-gray-light radius-md mb-2">
+                            <span style="font-size: 30px;">🦴</span>
+                        </div>
+                        <h4 class="prod-title mb-1">A사 치킨 덴탈껌</h4>
+                        <p class="caption text-gray">적합도 <span class="text-primary font-bold">98%</span></p>
+                    </div>
+                    <div class="product-card-sq">
+                        <div class="img-box bg-pink-light radius-md mb-2">
+                            <span style="font-size: 30px;">🐟</span>
+                        </div>
+                        <h4 class="prod-title mb-1">B사 연어 트릿</h4>
+                        <p class="caption text-danger">⚠️ 알러지 위험!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ingredient Search block inside Home -->
+            <section class="search-section mt-5 bg-purple-light radius-lg p-btn">
+                <h3 class="mb-3">성분 사전 검색</h3>
+                <div class="search-input-box bg-white radius-pill shadow-sm">
+                    <i data-lucide="search" class="text-gray icon-sm"></i>
+                    <input type="text" placeholder="궁금한 성분을 입력하세요">
+                </div>
+            </section>
+
+            <!-- Caution Ingredients -->
+            <section class="caution-list mt-5 pb-5">
+                <div class="section-title-wrap mb-3">
+                    <h3>주의해야 할 성분</h3>
+                    <a href="#" class="btn-text">공부하기</a>
+                </div>
+                <div class="list-cards">
+                    <div class="card-row align-center">
+                        <div class="icon-sq bg-gray-light text-xl mr-3">💀</div>
+                        <div class="info-flex">
+                            <h4 class="mb-1">자일리톨</h4>
+                            <p class="caption text-gray">저혈당 및 간부전 유발</p>
+                        </div>
+                        <div class="tag-pill bg-pink text-white text-xs" style="background-color: var(--danger-color);">위험</div>
+                    </div>
+                    <div class="card-row align-center">
+                        <div class="icon-sq bg-gray-light text-xl mr-3">🍫</div>
+                        <div class="info-flex">
+                            <h4 class="mb-1">초콜릿</h4>
+                            <p class="caption text-gray">테오브로민 중독 증상</p>
+                        </div>
+                        <div class="tag-pill bg-pink text-white text-xs" style="background-color: var(--danger-color);">위험</div>
+                    </div>
+                    <div class="card-row align-center">
+                        <div class="icon-sq bg-gray-light text-xl mr-3">🧅</div>
+                        <div class="info-flex">
+                            <h4 class="mb-1">양파/마늘</h4>
+                            <p class="caption text-gray">적혈구 파괴 및 빈혈</p>
+                        </div>
+                        <div class="tag-pill tag-outline text-gray text-xs">주의</div>
+                    </div>
+                </div>
+                <br><br><br>
+            </section>
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 2: DICTIONARY                           -->
+        <!-- ============================================== -->
+        <main class="screen bg-gray-bg" id="screen-dictionary">
+            <header class="app-header-plain mb-4">
+                <span class="caption text-gray">성분 사전</span>
+                <h2 class="mt-1">원료 백과</h2>
+            </header>
+
+            <div class="search-input-box bg-white radius-pill shadow-sm mb-4">
+                <i data-lucide="search" class="text-gray icon-sm"></i>
+                <input type="text" value="토코페롤" style="font-weight: 600;">
+                <button class="clear-btn text-gray"><i data-lucide="x" class="icon-sm"></i></button>
+            </div>
+
+            <!-- Dictionary detail card -->
+            <div class="card radius-lg bg-white shadow-card mb-5">
+                <p class="caption text-gray-light mb-1">Tocopherol / Vitamin E</p>
+                <h2 class="mb-3">토코페롤</h2>
+                <div class="tag-row mb-4">
+                    <span class="tag-pill bg-mint text-green text-xs font-bold">✓ 안전</span>
+                    <span class="tag-pill tag-outline text-xs">천연 보존제</span>
+                    <span class="tag-pill tag-outline text-xs">항산화제</span>
+                </div>
+
+                <h4 class="text-primary-dark text-sm mb-2 font-bold">한눈에 보기</h4>
+                <p class="sub-text text-main mb-4 line-h-15">비타민E의 일종으로, 사료의 산패를 막는 <strong>천연 보존제</strong>입니다. 합성 보존료(BHA, BHT)와 달리 반려동물에게 안전합니다.</p>
+
+                <h4 class="text-primary-dark text-sm mb-2 font-bold mt-4">건강 영향</h4>
+                <ul class="effect-list mb-4">
+                    <li><span class="text-main text-sm">면역 기능 강화</span> <span class="text-primary-dark text-xs font-bold">✔ 유익</span></li>
+                    <li><span class="text-main text-sm">피부·모질 개선</span> <span class="text-primary-dark text-xs font-bold">✔ 유익</span></li>
+                    <li><span class="text-main text-sm">과다 섭취 시 소화 불가 가능성</span> <span class="text-gray-dark text-xs font-bold">△ 주의</span></li>
+                </ul>
+
+                <div class="insight-box mt-3 p-3 radius-md bg-yellow-pale border-yellow">
+                    <p class="text-sm line-h-15 text-main">🐶 <strong>김설탕에게:</strong> 가금류 알러지와 무관한 안전 성분입니다. 신장 보호에도 도움이 됩니다.</p>
+                </div>
+            </div>
+
+            <div class="related-section mb-5">
+                <h3 class="mb-3">관련 성분</h3>
+                <div class="scroll-x gap-2">
+                    <span class="tag-pill bg-yellow text-dark text-xs font-bold" style="background-color: var(--warning-light);">⚠️ BHA</span>
+                    <span class="tag-pill bg-yellow text-dark text-xs font-bold" style="background-color: var(--warning-light);">⚠️ BHT</span>
+                    <span class="tag-pill bg-mint text-green text-xs font-bold">✅ 로즈마리 추출물</span>
+                    <span class="tag-pill bg-mint text-green text-xs font-bold">✅ 아스코르브산</span>
+                </div>
+            </div>
+
+            <div class="included-products mb-5 pb-5">
+                <div class="section-title-wrap mb-3">
+                    <h3>포함된 제품</h3>
+                    <span class="caption text-gray">12개 전체보기 &gt;</span>
+                </div>
+                <div class="list-cards">
+                    <div class="card-row align-center">
+                        <div class="icon-sq text-xl mr-3">🐟</div>
+                        <div class="info-flex">
+                            <h4 class="mb-1 text-sm">네이처브릿지 연어&현미</h4>
+                            <p class="caption text-gray">건사료 12단계 · 함량 낮음</p>
+                        </div>
+                        <div class="tag-pill bg-mint text-green text-xs font-bold">안심</div>
+                    </div>
+                    <div class="card-row align-center">
+                        <div class="icon-sq text-xl mr-3">🌾</div>
+                        <div class="info-flex">
+                            <h4 class="mb-1 text-sm">하림 더리얼 소고기</h4>
+                            <p class="caption text-gray">건사료 8단계 · 함량 보통</p>
+                        </div>
+                        <div class="tag-pill bg-mint text-green text-xs font-bold">안심</div>
+                    </div>
+                </div>
+                <br><br>
+            </div>
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 3: SEARCH ENTRY                         -->
+        <!-- ============================================== -->
+        <main class="screen" id="screen-search">
+            <header class="app-header-plain mb-4">
+                <span class="caption text-gray">제품 찾기</span>
+                <h2 class="mt-1">제품 검색</h2>
+            </header>
+
+            <div class="search-input-box bg-white radius-pill shadow-sm mb-5">
+                <i data-lucide="search" class="text-gray icon-sm"></i>
+                <input type="text" placeholder="브랜드명, 제품명을 입력하세요">
+            </div>
+
+            <section class="recent-search mb-5">
+                <div class="section-title-wrap mb-3">
+                    <h3 class="text-sm">최근 검색어</h3>
+                    <button class="btn-text">전체삭제</button>
+                </div>
+                <div class="chip-group d-flex gap-2 scroll-x">
+                    <span class="chip bg-white border-gray radius-pill px-3 py-1 text-xs">참치 캔</span>
+                    <span class="chip bg-white border-gray radius-pill px-3 py-1 text-xs">저알러지 사료</span>
+                    <span class="chip bg-white border-gray radius-pill px-3 py-1 text-xs">연어 트릿</span>
+                </div>
+            </section>
+
+            <section class="category-grid mb-5">
+                <h3 class="text-sm mb-3">카테고리별 찾기</h3>
+                <div class="grid-4 gap-3">
+                    <div class="cat-item text-center">
+                        <div class="icon-sq bg-gray-light radius-md mx-auto mb-1" style="width: 50px; height: 50px; font-size: 20px;">🦴</div>
+                        <span class="text-xs">건사료</span>
+                    </div>
+                    <div class="cat-item text-center">
+                        <div class="icon-sq bg-gray-light radius-md mx-auto mb-1" style="width: 50px; height: 50px; font-size: 20px;">🥫</div>
+                        <span class="text-xs">습식캔</span>
+                    </div>
+                    <div class="cat-item text-center">
+                        <div class="icon-sq bg-gray-light radius-md mx-auto mb-1" style="width: 50px; height: 50px; font-size: 20px;">🥩</div>
+                        <span class="text-xs">자연화식</span>
+                    </div>
+                    <div class="cat-item text-center">
+                        <div class="icon-sq bg-gray-light radius-md mx-auto mb-1" style="width: 50px; height: 50px; font-size: 20px;">🍪</div>
+                        <span class="text-xs">간식류</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="trending-ingredients">
+                <h3 class="text-sm mb-3">인기 급상승 성분 🚀</h3>
+                <ol class="list-border">
+                    <li class="d-flex align-center p-3 border-gray radius-md mb-2 bg-white">
+                        <span class="text-primary font-bold mr-3">1</span>
+                        <span class="text-sm">가수분해 연어</span>
+                        <span class="ml-auto text-xs text-gray">대세 성분</span>
+                    </li>
+                    <li class="d-flex align-center p-3 border-gray radius-md mb-2 bg-white">
+                        <span class="text-primary font-bold mr-3">2</span>
+                        <span class="text-sm">초록입홍합</span>
+                        <span class="ml-auto text-xs text-gray">관절 특화</span>
+                    </li>
+                </ol>
+            </section>
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 4: SEARCH RESULT                        -->
+        <!-- ============================================== -->
+        <main class="screen" id="screen-result">
+            <header class="app-header-plain d-flex align-center justify-between mb-4">
+                <div class="d-flex align-center">
+                    <button class="icon-btn-plain mr-3" onclick="document.querySelector('[data-screen=\'screen-search\']').click()"><i data-lucide="arrow-left"></i></button>
+                    <h2 style="font-size: 20px;">분석 결과</h2>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="icon-btn-plain"><i data-lucide="heart" class="icon-sm"></i></button>
+                    <button class="icon-btn-plain"><i data-lucide="share-2" class="icon-sm"></i></button>
+                </div>
+            </header>
+
+            <div class="product-banner-large text-center mb-5 mt-2">
+                <div class="prod-img-large mx-auto bg-gray-light radius-md mb-3" style="width: 120px; height: 120px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-size: 50px;">🥩</span>
+                </div>
+                <span class="badge-pill badge-neutral mb-2 d-inline-block">반려견용</span>
+                <h3 class="text-xl">프리미엄 독 습식 캔 닭고기</h3>
+                <p class="caption text-gray mt-1">제조사 : (주)냠냠펫푸드</p>
+                
+                <div class="tag-row justify-center mt-3">
+                    <span class="tag-pill bg-mint text-green text-xs font-bold">인기상품</span>
+                    <span class="tag-pill tag-outline text-xs">고단백</span>
+                </div>
+            </div>
+
+            <div class="analysis-alert card bg-white radius-lg shadow-card mb-5" style="border: 1px solid var(--danger-color); padding: 16px;">
+                <div class="d-flex align-center">
+                    <span class="text-2xl mr-3">❗</span>
+                    <p class="text-sm line-h-15"><strong>김설탕의 프로필에 등록된 가금류 알러지 성분(닭고기)이 포함되어 있습니다.</strong><br><span class="text-xs text-gray">알러지 반응 주의하시어 가급적 급여를 피해 주시기 바랍니다.</span></p>
+                </div>
+            </div>
+
+            <div class="major-nutrients mb-5">
+                <h3 class="mb-3">주요 성분 분석</h3>
+                <div class="list-cards">
+                    <div class="card-row d-flex align-center justify-between p-4 bg-white radius-md shadow-sm mb-2">
+                        <div class="d-flex align-center">
+                            <span class="icon-sq bg-gray-light mr-3" style="width: 36px; height: 36px; font-size: 14px;">정제</span>
+                            <div>
+                                <h4 class="text-sm mb-0">정제수</h4>
+                                <p class="caption text-gray">수분 보급 및 원료 배합</p>
+                            </div>
+                        </div>
+                        <span class="badge-pill badge-safe">안전</span>
+                    </div>
+                    <div class="card-row d-flex align-center justify-between p-4 bg-white radius-md shadow-sm mb-2">
+                        <div class="d-flex align-center">
+                            <span class="icon-sq bg-gray-light mr-3" style="width: 36px; height: 36px; font-size: 14px;">육류</span>
+                            <div>
+                                <h4 class="text-sm mb-0">닭고기(육)</h4>
+                                <p class="caption text-gray">양질의 육류 단백질원</p>
+                            </div>
+                        </div>
+                        <span class="badge-pill badge-danger">주의</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nutrition-dm mb-5">
+                <div class="section-title-wrap mb-3">
+                    <h3>영양 밸런스 (DM)</h3>
+                    <span class="caption text-gray">AAFCO 기준</span>
+                </div>
+                <div class="nutri-grid grid-2 gap-3">
+                    <div class="nutri-box bg-white p-3 radius-md shadow-sm">
+                        <p class="nutri-label text-xs text-gray mb-1">조단백</p>
+                        <p class="nutri-val font-bold mb-2">31.4%</p>
+                        <div class="progress-bg bg-gray-light radius-pill overflow-hidden" style="height: 4px;">
+                            <div class="progress-bar bg-primary" style="width: 75%; height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="nutri-box bg-white p-3 radius-md shadow-sm">
+                        <p class="nutri-label text-xs text-gray mb-1">조지방</p>
+                        <p class="nutri-val font-bold mb-2">14.2%</p>
+                        <div class="progress-bg bg-gray-light radius-pill overflow-hidden" style="height: 4px;">
+                            <div class="progress-bar bg-warning" style="width: 60%; height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="nutri-box bg-white p-3 radius-md shadow-sm">
+                        <p class="nutri-label text-xs text-gray mb-1">조섬유</p>
+                        <p class="nutri-val font-bold mb-2">41.8%</p>
+                        <div class="progress-bg bg-gray-light radius-pill overflow-hidden" style="height: 4px;">
+                            <div class="progress-bar bg-mint" style="width: 45%; height: 100%;"></div>
+                        </div>
+                    </div>
+                    <div class="nutri-box bg-white p-3 radius-md shadow-sm">
+                        <p class="nutri-label text-xs text-gray mb-1">조회분</p>
+                        <p class="nutri-val font-bold mb-2">0.72%</p>
+                        <div class="progress-bg bg-gray-light radius-pill overflow-hidden" style="height: 4px;">
+                            <div class="progress-bar bg-primary" style="width: 30%; height: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="insight-box mt-4 p-4 radius-md bg-purple-light" style="border: 1px dashed var(--primary-color);">
+                    <div class="d-flex align-center mb-2">
+                        <span class="badge-pill bg-primary text-white text-xs px-2 py-1 mr-2">AI ANALYZE</span>
+                        <strong class="text-sm">분석 결과 요약</strong>
+                    </div>
+                    <p class="text-sm line-h-15">단백질 함량이 높아 근육 성장에 좋으나, 소고기 알러지가 있으므로 신중히 선택하세요.</p>
+                </div>
+            </div>
+
+            <div class="recommend-section mb-5 pb-5">
+                <h3 class="mb-3">대안 제품 추천 ✨</h3>
+                <div class="suggestion-card shadow-sm mb-3">
+                    <div class="suggestion-img">🐶</div>
+                    <div class="info-flex">
+                        <p class="text-xs text-primary font-bold mb-1">ALL ABOUT PRICE</p>
+                        <h4 class="text-sm mb-1">베이컨박스 연우＆함박 캔</h4>
+                        <p class="text-sm font-bold">최저가 : 3,800원</p>
+                    </div>
+                </div>
+                <button class="btn-buy">최저가로 구매하기</button>
+                <br><br>
+            </div>
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 5: SHOPPING                             -->
+        <!-- ============================================== -->
+        <main class="screen" id="screen-shopping">
+            <header class="app-header-plain mb-4">
+                <span class="caption text-gray">쇼핑몰</span>
+                <h2 class="mt-1">추천 상품</h2>
+            </header>
+
+            <div class="search-input-box bg-white radius-pill shadow-sm mb-4">
+                <i data-lucide="search" class="text-gray icon-sm"></i>
+                <input type="text" placeholder="상품명을 입력하세요">
+            </div>
+
+            <div class="content-pad">
+                <div class="grid-2 gap-3 mb-5">
+                    <div class="product-card-sq bg-white radius-lg shadow-sm p-3">
+                        <div class="img-box bg-gray-light radius-md mb-2">
+                            <span style="font-size: 30px;">🥫</span>
+                        </div>
+                        <h4 class="prod-title mb-1">C사 유기농 캔</h4>
+                        <p class="caption text-gray">9,500원</p>
+                    </div>
+                    <div class="product-card-sq bg-white radius-lg shadow-sm p-3">
+                        <div class="img-box bg-gray-light radius-md mb-2">
+                            <span style="font-size: 30px;">🦴</span>
+                        </div>
+                        <h4 class="prod-title mb-1">D사 수제 뼈다귀</h4>
+                        <p class="caption text-gray">12,000원</p>
+                    </div>
+                </div>
+                
+                <div class="alert-box bg-purple-light border-primary p-4 radius-lg text-center">
+                    <p class="text-sm">현재 <strong>김설탕</strong>에게 적합한<br>맞춤형 상품들을 불러오고 있습니다...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ============================================== -->
+        <!-- SCREEN 5: PROFILE SETUP                        -->
+        <!-- ============================================== -->
+        <main class="screen" id="screen-profile">
+            <header class="app-header-plain mb-3">
+                <span class="caption text-gray">프로필 등록</span>
+                <h2 class="mt-1">우리 아이 정보</h2>
+            </header>
+
+            <!-- Progress bar -->
+            <div class="step-container mb-5">
+                <div class="progress-bg bg-gray-light radius-pill overflow-hidden" style="height: 6px; display: flex;">
+                    <div class="step-bar bg-primary" style="width: 25%; border-right: 2px solid white;"></div>
+                    <div class="step-bar bg-primary" style="width: 25%; border-right: 2px solid white;"></div>
+                    <div class="step-bar bg-primary" style="width: 25%; border-right: 2px solid white;"></div>
+                    <div class="step-bar bg-gray-light" style="width: 25%;"></div>
+                </div>
+                <div class="d-flex justify-between mt-2">
+                    <span class="text-xs font-bold text-gray">3 / 4단계: 알러지 & 질환 설정</span>
+                </div>
+                <h3 class="mt-4 mb-2">건강 정보를 알려주세요</h3>
+                <p class="caption text-gray line-h-15">등록된 정보를 기반으로 제품의 적합도를 판단하고 맞춤 대안을 추천해 드립니다.</p>
+            </div>
+
+            <div class="form-group mb-5">
+                <h4 class="mb-3">반려동물 선택</h4>
+                <div class="d-flex gap-3 scroll-x">
+                    <div class="select-sq-card active">
+                        <div class="img-wrap mb-2 shadow-sm" style="width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: white; border: 2px solid var(--primary-color);">
+                            <span style="font-size: 24px;">🐶</span>
+                        </div>
+                        <span class="text-xs font-bold">김설탕</span>
+                    </div>
+                    <div class="select-sq-card">
+                        <div class="img-wrap mb-2 bg-gray-light" style="width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 24px;">🐱</span>
+                        </div>
+                        <span class="text-xs text-gray">나비</span>
+                    </div>
+                    <div class="select-sq-card">
+                        <div class="img-wrap mb-2 border-dashed" style="width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc;">
+                            <i data-lucide="plus" class="text-gray-light"></i>
+                        </div>
+                        <span class="text-xs text-light">추가</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-5">
+                <h4 class="mb-3">기본 정보</h4>
+                <div class="grid-2 mb-3">
+                    <div>
+                        <label class="caption text-gray mb-1 d-block">이름</label>
+                        <input type="text" class="input-plain radius-md border-gray w-100" value="김설탕" style="border: 1px solid var(--gray-border); width: 100%; padding: 12px;">
+                    </div>
+                    <div>
+                        <label class="caption text-gray mb-1 d-block">종류</label>
+                        <input type="text" class="input-plain radius-md border-gray w-100" value="강아지" style="border: 1px solid var(--gray-border); width: 100%; padding: 12px;">
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div>
+                        <label class="caption text-gray mb-1 d-block">품종</label>
+                        <input type="text" class="input-plain radius-md border-gray w-100" value="믹스견" style="border: 1px solid var(--gray-border); width: 100%; padding: 12px;">
+                    </div>
+                    <div>
+                        <label class="caption text-gray mb-1 d-block">나이</label>
+                        <input type="text" class="input-plain radius-md border-gray w-100" value="8세" style="border: 1px solid var(--gray-border); width: 100%; padding: 12px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-5">
+                <h4 class="mb-3 text-warning">⚠️ 알러지 유발 성분</h4>
+                <div class="grid-3 gap-2">
+                    <div class="select-btn-sq border-gray radius-md align-center justify-center p-3 text-center">
+                        <span class="text-lg mb-1 d-block">👁️</span>
+                        <span class="text-xs">눈가</span>
+                    </div>
+                    <div class="select-btn-sq border-gray radius-md align-center justify-center p-3 text-center">
+                        <span class="text-lg mb-1 d-block">👂</span>
+                        <span class="text-xs">귓속</span>
+                    </div>
+                    <div class="select-btn-sq bg-purple-light border-primary radius-md align-center justify-center p-3 text-center active shadow-sm">
+                        <span class="text-lg mb-1 d-block">🍗</span>
+                        <span class="text-xs font-bold text-primary-dark">닭고기</span>
+                    </div>
+                    <div class="select-btn-sq border-gray radius-md align-center justify-center p-3 text-center">
+                        <span class="text-lg mb-1 d-block">🦷</span>
+                        <span class="text-xs">잇몸</span>
+                    </div>
+                    <div class="select-btn-sq border-gray radius-md align-center justify-center p-3 text-center">
+                        <span class="text-lg mb-1 d-block">🥚</span>
+                        <span class="text-xs">달걀</span>
+                    </div>
+                    <div class="select-btn-sq bg-purple-light border-primary radius-md align-center justify-center p-3 text-center active shadow-sm">
+                        <span class="text-lg mb-1 d-block">🥩</span>
+                        <span class="text-xs font-bold text-primary-dark">소고기</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-5 pb-5">
+                <h4 class="mb-3">🏥 기저 질환</h4>
+                <ul class="list-border">
+                    <li class="d-flex justify-between align-center p-3 border-gray radius-md mb-2" style="border: 1px solid var(--gray-border);">
+                        <span class="text-sm">📌 만성 신부전 (CKD)</span>
+                        <input type="checkbox" class="chk-box" checked>
+                    </li>
+                    <li class="d-flex justify-between align-center p-3 border-gray radius-md mb-2" style="border: 1px solid var(--gray-border);">
+                        <span class="text-sm">❤️ 심장 질환</span>
+                        <input type="checkbox" class="chk-box">
+                    </li>
+                    <li class="d-flex justify-between align-center p-3 border-gray radius-md mb-2" style="border: 1px solid var(--gray-border);">
+                        <span class="text-sm">🦴 관절염 / 고관절</span>
+                        <input type="checkbox" class="chk-box">
+                    </li>
+                </ul>
+                
+                <button class="btn btn-primary btn-block btn-pill text-white mt-4 shadow-btn" style="padding: 18px; width: 100%;">설정 저장 후 완료 →</button>
+                <br><br><br>
+            </div>
+            <br><br>
+        </main>
+
+
+        <!-- ============================================== -->
+        <!-- BOTTOM NAVIGATION                              -->
+        <!-- ============================================== -->
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-screen="screen-home">
+                <i data-lucide="home"></i>
+                <span>홈</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="screen-search">
+                <i data-lucide="search"></i>
+                <span>검색</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="screen-dictionary">
+                <i data-lucide="book-open"></i>
+                <span>사전</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="screen-shopping">
+                <i data-lucide="shopping-bag"></i>
+                <span>쇼핑</span>
+            </a>
+            <a href="#" class="nav-item" data-screen="screen-profile">
+                <i data-lucide="user"></i>
+                <span>프로필</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
